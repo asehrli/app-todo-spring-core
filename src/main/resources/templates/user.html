@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+</head>
+<body>
+
+<div class="header shadow p-3 bg-light text-secondary text-center">
+    <h4>This is Users page</h4>
+</div>
+
+<div class="users px-5 mx-5">
+    <div  class="user border-bottom pb-3 d-flex justify-content-between align-items-center" th:each="user:${users}">
+        <div class="info">
+            <b th:text="${user.name}"/>
+            <p th:text="${user.email}"/>
+        </div>
+        <div class="action">
+            <form action="/user/enable" method="post">
+                <input type="text" name="id" th:value="${user.id}" hidden>
+                <input type="text" name="enabled" th:value="${!user.enabled}" hidden>
+                <button th:class="${user.enabled ? 'btn btn-danger' : 'btn btn-warning'}" th:text="${user.enabled ? 'Disable' : 'Enable'}"></button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

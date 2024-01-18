@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Role</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+    <style>
+        .model {
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, .6);
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header shadow p-3 bg-light text-secondary text-center">
+    <h4>This is Role page</h4>
+</div>
+
+<br>
+<button class="btn btn-primary add-btn">Add Role</button>
+<br>
+
+<div class="model d-none">
+    <div class="container d-flex justify-content-center pt-5">
+        <form action="/role" method="post">
+            <h3 class="text-info">Add Role</h3>
+            <label>
+                <input class="form-control" type="text" name="name"
+                       placeholder="enter role name">
+                <br>
+            </label>
+
+            <label>
+                <i class="text-warning">choose multiple</i>
+                <select class="form-control" name="permissions" multiple>
+                    <option th:each="permission:${permissions}"
+                            th:text="${permission.name()}"
+                            th:value="${permission.name()}"/>
+                </select>
+            </label>
+            <div class="actions d-flex justify-content-between pt-2">
+                <button class="btn btn-success" type="submit">Save</button>
+                <button class="cls-btn btn btn-danger" type="button">Close</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Permissions</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="role: ${roles}">
+        <td th:text="${role.id}"/>
+        <td th:text="${role.name}"/>
+        <td>
+            <label>
+                <select>
+                    <option th:each="permission:${role.permissions}"
+                            th:text="${permission.name()}"
+                            th:value="${permission.name()}"/>
+                </select>
+            </label>
+        </td>
+        <td class="d-flex gap-3">
+            <button class="btn btn-warning">Edit</button>
+            <form th:action="'role/delete?id=' + ${role.id}" method="post">
+                <button class="btn btn-danger">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<script>
+    let addBtn = document.querySelector('.add-btn')
+    let clsBtn = document.querySelector('.cls-btn')
+    let model = document.querySelector('.model')
+
+    addBtn.addEventListener('click', () => {
+        model.classList.remove('d-none')
+        model.classList.add('d-block')
+    })
+    clsBtn.addEventListener('click', () => {
+        model.classList.remove('d-block')
+        model.classList.add('d-none')
+    })
+
+
+</script>
+
+</body>
+</html>

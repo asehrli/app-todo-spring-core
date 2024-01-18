@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <style>
+        .model {
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, .6);
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header shadow p-3 bg-light text-secondary text-center">
+    <h4>This is Todo page</h4>
+</div>
+
+<div class="model d-none">
+    <div class="container d-flex justify-content-center pt-5">
+        <form action="/todo" method="post">
+            <h3 class="text-info">Add Todo</h3>
+            <label>
+                <input class="form-control" type="text" name="title"
+                       placeholder="enter title">
+                <br>
+            </label>
+            <label>
+                <input class="form-control" type="text" name="description"
+                       placeholder="enter description">
+                <br>
+            </label>
+
+            <div class="actions d-flex justify-content-between pt-2">
+                <button class="btn btn-success" type="submit">Save</button>
+                <button class="cls-btn btn btn-danger" type="button">Close</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<div class="todos">
+    <div class="todo d-flex justify-content-between px-5" th:each="todo:${todos}">
+        <div class="todo-body">
+            <b th:text="${todo.title}"/>
+            <p th:text="${todo.description}"/>
+        </div>
+        <div class="todo-action d-flex gap-3">
+            <form th:action="'/todo/delete?id=' + ${todo.id}" method="post">
+                <button class="btn btn-outline-danger">Delete</button>
+            </form>
+            <form th:if="${!todo.deleted}"
+                  th:action="'/todo/complete?id=' + ${todo.id}" method="post">
+                <button class="btn btn-success">Completed</button>
+            </form>
+        </div>
+    </div>
+
+    <br>
+    <button class="add-btn btn btn-outline-primary w-100">Add Todo</button>
+</div>
+
+<script>
+    let addBtn = document.querySelector('.add-btn')
+    let clsBtn = document.querySelector('.cls-btn')
+    let model = document.querySelector('.model')
+
+    addBtn.addEventListener('click', () => {
+        model.classList.remove('d-none')
+        model.classList.add('d-block')
+    })
+
+    clsBtn.addEventListener('click', () => {
+        model.classList.remove('d-block')
+        model.classList.add('d-none')
+    })
+
+</script>
+
+</body>
+</html>
